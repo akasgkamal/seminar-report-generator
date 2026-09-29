@@ -1,1 +1,0 @@
-# seminar-report-generator
