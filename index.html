@@ -90,7 +90,7 @@
       justify-content: space-between;
       align-items: center;
     }
-    label { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-top: 4px; }
+    label { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; }
     input[type="text"], input[type="file"], textarea {
       width: 100%;
       padding: 7px 9px;
@@ -105,13 +105,13 @@
       display: flex;
       flex-wrap: wrap;
       gap: 5px;
-      margin-top: 6px;
+      margin-top: 4px;
     }
     .btn-sm {
       background: #ffffff;
       border: 1px solid #cbd5e1;
       border-radius: 4px;
-      padding: 5px 8px;
+      padding: 4px 8px;
       font-size: 11px;
       cursor: pointer;
       font-weight: 600;
@@ -163,7 +163,7 @@
       gap: 30px;
     }
 
-    /* A4 Dimensions */
+    /* Standard A4 Screen & Print Dimensions */
     .a4-page {
       width: 210mm;
       min-width: 210mm;
@@ -173,14 +173,19 @@
       max-height: 297mm;
       background: #ffffff;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      /* Kalamassery Report Margins: Top 30mm, Right 20mm, Bottom 25mm, Left 32.5mm */
       padding: 30mm 20mm 25mm 32.5mm;
       box-sizing: border-box;
       font-family: var(--serif);
       position: relative;
       display: flex;
       flex-direction: column;
+      page-break-before: always;
+      break-before: page;
       page-break-after: always;
       break-after: page;
+      page-break-inside: avoid;
+      break-inside: avoid;
       overflow: hidden;
     }
 
@@ -188,16 +193,17 @@
       padding: 20mm 25mm 18mm 25mm !important;
     }
 
+    /* 50% Enlarged Emblem */
     .official-logo {
-      width: 130px;
-      height: 130px;
+      width: 142px;
+      height: 142px;
       margin: 0 auto 8px auto;
       display: block;
       object-fit: contain;
     }
     .logo-placeholder {
-      width: 130px;
-      height: 130px;
+      width: 142px;
+      height: 142px;
       margin: 0 auto 8px auto;
       display: flex;
       align-items: center;
@@ -209,6 +215,7 @@
       font-style: italic;
     }
 
+    /* Running Header & Footer */
     .page-header {
       position: absolute;
       top: 15mm;
@@ -216,7 +223,7 @@
       right: 20mm;
       display: flex;
       justify-content: flex-end;
-      font-size: 10.5pt;
+      font-size: 11pt;
       font-style: italic;
       border-bottom: 1px solid #000;
       padding-bottom: 3px;
@@ -229,7 +236,7 @@
       right: 20mm;
       display: flex;
       justify-content: space-between;
-      font-size: 10.5pt;
+      font-size: 11pt;
       font-style: italic;
       border-top: 1px solid #000;
       padding-top: 3px;
@@ -237,84 +244,152 @@
     }
 
     .page-content {
-      width: 100%;
       height: 100%;
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
 
+    /* Typography Specifications */
     .chapter-title {
       font-size: 16pt;
       font-weight: bold;
       text-transform: uppercase;
       text-align: center;
       margin-top: 10pt;
-      margin-bottom: 14pt;
+      margin-bottom: 12pt;
       line-height: 1.2;
     }
     .subheading-l1 {
-      font-size: 13.5pt;
+      font-size: 14pt;
       font-weight: bold;
       text-transform: uppercase;
       text-align: left;
-      margin-top: 12pt;
-      margin-bottom: 8pt;
+      margin-top: 10pt;
+      margin-bottom: 10pt;
       line-height: 1.2;
     }
     .subheading-l2 {
-      font-size: 12.5pt;
+      font-size: 14pt;
       font-weight: bold;
       text-align: left;
       margin-top: 10pt;
-      margin-bottom: 6pt;
+      margin-bottom: 10pt;
       line-height: 1.2;
     }
     .body-paragraph {
       font-size: 12pt;
       line-height: 1.5;
       text-align: justify;
-      text-indent: 32px;
+      text-indent: 35px;
       margin-top: 0;
       margin-bottom: 10pt;
-      word-break: break-word;
     }
 
+    /* Unclipped Adaptive Figure Container */
     .figure-container {
       text-align: center;
-      margin: 10pt 0;
-      width: 100%;
+      margin: 10pt 0 12pt 0;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      page-break-inside: avoid;
+      break-inside: avoid;
     }
     .figure-container img {
-      max-width: 90%;
-      max-height: 110mm;
+      max-width: 95%;
+      height: auto;
+      max-height: 100mm;
       object-fit: contain;
-      border-radius: 2px;
+      display: block;
     }
     .figure-caption {
-      font-size: 10.5pt;
+      font-size: 10pt;
       font-weight: bold;
       margin-top: 6pt;
+      margin-bottom: 4pt;
       text-align: center;
       line-height: 1.2;
     }
 
-    /* Invisible Stage used to accurately compute rendered heights */
-    #measureStage {
-      position: absolute;
-      visibility: hidden;
-      top: -99999px;
-      left: -99999px;
-      width: calc(210mm - 52.5mm); /* 210mm - (32.5mm + 20mm) */
-      box-sizing: border-box;
-      font-family: var(--serif);
+    /* Table of Contents */
+    .toc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 6px;
+    }
+    .toc-title {
+      background: white;
+      padding-right: 6px;
+      z-index: 1;
+    }
+    .toc-leader {
+      flex: 1;
+      border-bottom: 1px dotted #000;
+      margin-bottom: 4px;
+    }
+    .toc-page {
+      background: white;
+      padding-left: 6px;
+      z-index: 1;
     }
 
-    /* Print Setup */
+    /* Invisible sandbox */
+    #sandboxContainer {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+      width: 157.5mm;
+      visibility: hidden;
+      font-family: var(--serif);
+      font-size: 12pt;
+      line-height: 1.5;
+    }
+
+    /* Mobile Rules */
+    @media screen and (max-width: 1024px) {
+      body {
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .mobile-tab-bar {
+        display: flex;
+      }
+      .sidebar {
+        width: 100%;
+        min-width: 100%;
+        height: calc(100vh - 50px);
+        margin-top: 50px;
+        border-right: none;
+        padding: 15px;
+        display: flex;
+      }
+      .preview-stage {
+        width: 100%;
+        height: calc(100vh - 50px);
+        margin-top: 50px;
+        padding: 15px 5px;
+        display: none;
+        overflow-x: auto;
+      }
+      .a4-page {
+        transform-origin: top center;
+        transform: scale(0.48);
+        margin-bottom: -140mm;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      .a4-page {
+        transform: scale(0.42);
+        margin-bottom: -165mm;
+      }
+    }
+
+    /* Dedicated Print Rules */
     @media print {
       html, body {
         width: 210mm;
@@ -324,7 +399,7 @@
         padding: 0 !important;
         overflow: visible !important;
       }
-      .mobile-tab-bar, .sidebar, #measureStage {
+      .mobile-tab-bar, .sidebar, #sandboxContainer {
         display: none !important;
       }
       .preview-stage {
@@ -346,6 +421,8 @@
         break-before: page !important;
         page-break-after: always !important;
         break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
       .a4-page:first-child {
         page-break-before: auto !important;
@@ -356,16 +433,22 @@
 </head>
 <body>
 
+  <!-- Hidden sandbox for measurements -->
+  <div id="sandboxContainer"></div>
+
+  <!-- Mobile Top Switcher -->
   <div class="mobile-tab-bar">
     <button class="mobile-tab-btn active" id="tabFormBtn" onclick="switchMobileTab('form')">Edit Form</button>
     <button class="mobile-tab-btn" id="tabPreviewBtn" onclick="switchMobileTab('preview')">Preview Report</button>
     <button class="mobile-tab-btn" style="background:#0284c7; color:#fff;" onclick="window.print()">Print / PDF</button>
   </div>
 
+  <!-- Controls Sidebar -->
   <div class="sidebar" id="sidebarPanel">
     <h2>Seminar Report Generator</h2>
     <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
 
+    <!-- Upload Provision for College Emblem -->
     <div class="card" style="border: 2px solid #38bdf8; background: #f0f9ff;">
       <div class="card-title" style="color: #0369a1;">College Emblem Upload</div>
       <label>Choose Logo / Seal File</label>
@@ -391,21 +474,21 @@
       <input type="text" id="metaYear" value="2026 – 2027" oninput="renderReport()">
 
       <label>Running Header Text</label>
-      <input type="text" id="metaHeader" value="Seminar Report | GPTC Kalamassery" oninput="renderReport()">
+      <input type="text" id="metaHeader" value="Main Project Report Format" oninput="renderReport()">
     </div>
 
+    <!-- Acknowledgement Card -->
     <div class="card">
       <div class="card-title">Pre-Included: Acknowledgement</div>
-      <textarea id="inAck" rows="6" oninput="reportData.acknowledgement = this.value; renderReport();"></textarea>
+      <textarea id="inAck" rows="8" oninput="reportData.acknowledgement = this.value; renderReport();"></textarea>
     </div>
 
+    <!-- Chapters Container -->
     <div id="chaptersControls"></div>
-
-    <button class="btn-sm btn-action" style="padding:10px; font-size:13px;" onclick="addChapter()">+ Add New Chapter</button>
   </div>
 
+  <!-- Preview Area -->
   <div class="preview-stage" id="previewStage"></div>
-  <div id="measureStage"></div>
 
 <script>
   let uploadedEmblemUrl = "";
@@ -417,32 +500,36 @@ I am deeply thankful to our respected Principal, Sri. Vinod E, for granting perm
 
 I extend my sincere gratitude to Sri. Akas G. Kamal, Head of Department in charge and Seminar Coordinator, for the guidance, valuable suggestions, and systematic arrangements in conducting the seminar sessions.
 
-I convey my sincere appreciation to all faculty members, staff, and my fellow classmates for their constant encouragement.`,
-    abstract: "Image retrieval is the field of study concerned with searching and browsing digital images from collections. Querying for images can be categorized into textual queries and content-based queries. This seminar report explores feature extraction, similarity computation, and relevance feedback mechanisms.",
+I also place on record my sincere thanks to Smt. Sunitha E. S., former Head of Department in charge and Seminar Coordinator, for initiating the seminar activities and extending initial support.
+
+I convey my sincere appreciation to all the faculty and staff members of the Department of Electronics and Communication Engineering, as well as my fellow classmates, for their constant encouragement and cooperation throughout this work.`,
+    abstract: "Image retrieval is the field of study concerned with searching and browsing digital images from a collection of databases. Querying for images can be categorized into two broad formats: textual queries and content-based queries. This seminar report explores feature extraction, similarity computation, and relevance feedback mechanisms.",
+    references: [
+      "[1] D. Patterson and A. Waterman, The RISC-V Reader: An Open Architecture Atlas, 2017.",
+      "[2] K. Asanovic, 'Instruction Sets Should Be Free: The Case for RISC-V,' UC Berkeley EECS, 2014.",
+      "[3] IEEE Standards Association, 'Standard for Open-Source Hardware Verification,' IEEE Micro, 2022."
+    ],
     chapters: [
       {
         title: "Introduction to CBIR",
         blocks: [
           {
             type: "paragraph",
-            content: "As processors become increasingly powerful and memories become increasingly cheaper, the deployment of large image databases for a variety of applications has now become scalable. Databases of artwork, satellite imagery, and medical imaging have attracted researchers across diverse disciplines."
+            content: "As processors become increasingly powerful and memories become increasingly cheaper, the deployment of large image databases for a variety of applications has now become scalable. Databases of art work, satellite and medical imagery have been attracting more and more users in various professional fields."
           },
           {
             type: "subheading1",
-            content: "What Is Content-Based Image Retrieval?"
+            content: "What Is Content Based Image Retrieval?"
           },
           {
             type: "paragraph",
-            content: "Image retrieval is concerned with searching, browsing, and retrieving digital images from vast repositories. Visual queries evaluate colour, texture, and shape descriptors directly rather than relying on manual keyword tags."
+            content: "Image retrieval is the field of study concerned with searching, browsing, and retrieving digital images from a collection of databases. Querying for images from large and varied image databases can be categorized into two broad formats: text queries and visual queries. The Government Polytechnic, Kalamassery is one of the major Polytechnics in Kerala State. It was established in the year 1951 during the first five year plan. This institution is located by the side of NH 47, almost midway between Ernakulam and Alwaye and in the industrial belt of Kerala. The campus of this polytechnic has an area of 16 hectares with entrance from the National Highway. Within the campus there are a number of buildings like the administrative block, classrooms, workshops, laboratories, student's hostel, staff quarters, canteen etc., all located in such a manner that it provides a calm and quiet atmosphere for teaching and learning unaffected by the sound and fury of this industrial town."
           },
           {
             type: "figure",
-            src: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='260' viewBox='0 0 600 260'><rect width='600' height='260' fill='%23f1f5f9' stroke='%2394a3b8' stroke-width='2'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Times New Roman' font-size='20' fill='%23334155'>Architecture Block Diagram</text></svg>",
-            caption: "Block diagram of an automated CBIR pipeline."
-          },
-          {
-            type: "paragraph",
-            content: "The feature vectors are indexed efficiently to facilitate fast k-nearest-neighbor search across millions of candidate representations. In modern systems, deep convolutional features replace handcrafted descriptors."
+            src: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='260' viewBox='0 0 600 260'><rect width='600' height='260' fill='%23f1f5f9'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Times New Roman' font-size='18' fill='%23334155'>Block Diagram Placeholder</text></svg>",
+            caption: "Query by example and keyword retrieval interface.",
+            aspectRatio: 600 / 260
           }
         ]
       },
@@ -466,9 +553,24 @@ I convey my sincere appreciation to all faculty members, staff, and my fellow cl
             content: "Color moments have been successfully used in many retrieval systems, especially when the image contains only the object. The first order (mean), the second order (variance), and the third order moments are extracted."
           }
         ]
+      },
+      {
+        title: "Conclusion and Future Scope",
+        blocks: [
+          {
+            type: "paragraph",
+            content: "In this seminar report, content-based image retrieval techniques have been analyzed. A relevance feedback mechanism effectively bridges the semantic gap between low-level visual features and high-level user perception."
+          }
+        ]
       }
     ]
   };
+
+  function toTitleCase(str) {
+    return str.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
 
   function switchMobileTab(tab) {
     const sidebar = document.getElementById('sidebarPanel');
@@ -505,61 +607,25 @@ I convey my sincere appreciation to all faculty members, staff, and my fellow cl
     if (uploadedEmblemUrl && uploadedEmblemUrl.trim() !== "") {
       return `<img src="${uploadedEmblemUrl}" class="official-logo" alt="College Emblem">`;
     }
-    return `<div class="logo-placeholder">Upload Emblem Above</div>`;
-  }
-
-  function addChapter() {
-    reportData.chapters.push({
-      title: "New Chapter",
-      blocks: [{ type: "paragraph", content: "Enter chapter details here..." }]
-    });
-    renderControls();
-    renderReport();
-  }
-
-  function removeChapter(cIdx) {
-    reportData.chapters.splice(cIdx, 1);
-    renderControls();
-    renderReport();
-  }
-
-  function addBlock(cIdx, type) {
-    if (type === 'figure') {
-      reportData.chapters[cIdx].blocks.push({
-        type: 'figure',
-        src: 'https://via.placeholder.com/600x300?text=Insert+Diagram',
-        caption: 'Figure description'
-      });
-    } else {
-      reportData.chapters[cIdx].blocks.push({ type, content: type.includes('subheading') ? 'New Subheading' : 'New paragraph content...' });
-    }
-    renderControls();
-    renderReport();
-  }
-
-  function removeBlock(cIdx, bIdx) {
-    reportData.chapters[cIdx].blocks.splice(bIdx, 1);
-    renderControls();
-    renderReport();
-  }
-
-  function handleFigureUpload(event, cIdx, bIdx) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        reportData.chapters[cIdx].blocks[bIdx].src = evt.target.result;
-        renderReport();
-      };
-      reader.readAsDataURL(file);
-    }
+    return `<div class="logo-placeholder">Upload Seal Above</div>`;
   }
 
   function renderControls() {
     document.getElementById('inAck').value = reportData.acknowledgement;
+
     const container = document.getElementById('chaptersControls');
     container.innerHTML = '';
 
+    // Abstract Card
+    const absCard = document.createElement('div');
+    absCard.className = 'card';
+    absCard.innerHTML = `
+      <div class="card-title">Pre-Included: Abstract</div>
+      <textarea rows="4" oninput="reportData.abstract = this.value; renderReport();">${reportData.abstract}</textarea>
+    `;
+    container.appendChild(absCard);
+
+    // Dynamic Chapters Cards
     reportData.chapters.forEach((chap, cIdx) => {
       const card = document.createElement('div');
       card.className = 'card';
@@ -570,7 +636,7 @@ I convey my sincere appreciation to all faculty members, staff, and my fellow cl
             <div class="block-item">
               <div class="block-item-header">
                 <span>Paragraph</span>
-                <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Delete</button>
+                <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Remove</button>
               </div>
               <textarea rows="3" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].content = this.value; renderReport();">${b.content}</textarea>
             </div>
@@ -579,8 +645,8 @@ I convey my sincere appreciation to all faculty members, staff, and my fellow cl
           return `
             <div class="block-item">
               <div class="block-item-header">
-                <span>Subheading 1 (e.g. 1.1)</span>
-                <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Delete</button>
+                <span>First Subheading (1.1, 2.1...)</span>
+                <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Remove</button>
               </div>
               <input type="text" value="${b.content}" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].content = this.value; renderReport();">
             </div>
@@ -589,8 +655,8 @@ I convey my sincere appreciation to all faculty members, staff, and my fellow cl
           return `
             <div class="block-item">
               <div class="block-item-header">
-                <span>Subheading 2 (e.g. 1.1.1)</span>
-                <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Delete</button>
+                <span>Second Subheading (1.1.1, 2.1.1...)</span>
+                <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Remove</button>
               </div>
               <input type="text" value="${b.content}" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].content = this.value; renderReport();">
             </div>
@@ -599,13 +665,12 @@ I convey my sincere appreciation to all faculty members, staff, and my fellow cl
           return `
             <div class="block-item">
               <div class="block-item-header">
-                <span>Figure / Diagram</span>
-                <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Delete</button>
+                <span>Figure</span>
+                <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Remove</button>
               </div>
-              <label>Replace Image</label>
-              <input type="file" accept="image/*" onchange="handleFigureUpload(event, ${cIdx}, ${bIdx})">
-              <label>Caption</label>
-              <input type="text" value="${b.caption}" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].caption = this.value; renderReport();">
+              <input type="file" accept="image/*" onchange="uploadBlockImage(event, ${cIdx}, ${bIdx})">
+              <label style="margin-top:4px; display:block;">Caption:</label>
+              <input type="text" value="${b.caption}" placeholder="Name of the figure" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].caption = this.value; renderReport();">
             </div>
           `;
         }
@@ -614,182 +679,525 @@ I convey my sincere appreciation to all faculty members, staff, and my fellow cl
       card.innerHTML = `
         <div class="card-title">
           <span>Chapter ${cIdx + 1}</span>
-          <button class="btn-sm btn-del" onclick="removeChapter(${cIdx})">Remove Chapter</button>
+          <div>
+            <button class="btn-sm btn-action" title="Insert chapter above" onclick="insertChapter(${cIdx})">+ Add Above</button>
+            <button class="btn-sm btn-action" title="Insert chapter below" onclick="insertChapter(${cIdx + 1})">+ Add Below</button>
+            ${reportData.chapters.length > 1 ? `<button class="btn-sm btn-del" onclick="deleteChapter(${cIdx})">Delete</button>` : ''}
+          </div>
         </div>
-        <label>Chapter Title</label>
+        <label>Chapter Heading</label>
         <input type="text" value="${chap.title}" oninput="reportData.chapters[${cIdx}].title = this.value; renderReport();">
+        
+        <div style="font-size:11px; font-weight:bold; margin-top:8px;">Add Modular Content:</div>
         <div class="block-toolbar">
           <button class="btn-sm" onclick="addBlock(${cIdx}, 'paragraph')">+ Paragraph</button>
           <button class="btn-sm" onclick="addBlock(${cIdx}, 'subheading1')">+ Subheading 1</button>
           <button class="btn-sm" onclick="addBlock(${cIdx}, 'subheading2')">+ Subheading 2</button>
           <button class="btn-sm" onclick="addBlock(${cIdx}, 'figure')">+ Figure</button>
         </div>
-        ${blocksHtml}
+        <div>${blocksHtml}</div>
       `;
       container.appendChild(card);
     });
+
+    // References Card
+    const refCard = document.createElement('div');
+    refCard.className = 'card';
+    refCard.innerHTML = `
+      <div class="card-title">Pre-Included: References</div>
+      <textarea rows="4" placeholder="One reference per line" oninput="reportData.references = this.value.split('\\n'); renderReport();">${reportData.references.join('\n')}</textarea>
+    `;
+    container.appendChild(refCard);
   }
 
-  // Pre-calculate DOM height for arbitrary content block
-  function measureBlockHeight(html) {
-    const stage = document.getElementById('measureStage');
-    stage.innerHTML = html;
-    const height = stage.offsetHeight;
-    stage.innerHTML = '';
-    return height;
+  function addBlock(cIdx, type) {
+    if (type === 'paragraph') reportData.chapters[cIdx].blocks.push({ type, content: "New paragraph body text..." });
+    if (type === 'subheading1') reportData.chapters[cIdx].blocks.push({ type, content: "New Sub-topic Heading" });
+    if (type === 'subheading2') reportData.chapters[cIdx].blocks.push({ type, content: "Detailed Section Analysis" });
+    if (type === 'figure') reportData.chapters[cIdx].blocks.push({ type, src: "", caption: "Name of the figure.", aspectRatio: 1.77 });
+    renderControls();
+    renderReport();
   }
 
-  function buildPageTemplate(pageNumber, headerText, isPreliminary) {
-    const page = document.createElement('div');
-    page.className = `a4-page ${isPreliminary ? 'prelim-page' : ''}`;
+  function removeBlock(cIdx, bIdx) {
+    reportData.chapters[cIdx].blocks.splice(bIdx, 1);
+    renderControls();
+    renderReport();
+  }
 
-    if (!isPreliminary) {
-      const header = document.createElement('div');
-      header.className = 'page-header';
-      header.innerText = headerText;
-      page.appendChild(header);
+  function insertChapter(positionIndex) {
+    reportData.chapters.splice(positionIndex, 0, {
+      title: "New Chapter Title",
+      blocks: [{ type: "paragraph", content: "Write chapter contents here..." }]
+    });
+    renderControls();
+    renderReport();
+  }
 
-      const footer = document.createElement('div');
-      footer.className = 'page-footer';
-      footer.innerHTML = `<span>GPTC Kalamassery</span><span>${pageNumber}</span>`;
-      page.appendChild(footer);
+  function deleteChapter(idx) {
+    reportData.chapters.splice(idx, 1);
+    renderControls();
+    renderReport();
+  }
+
+  // Pre-load natural image dimensions so height is computed synchronously
+  function uploadBlockImage(e, cIdx, bIdx) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const dataUrl = evt.target.result;
+        const tempImg = new Image();
+        tempImg.onload = function() {
+          const ratio = (tempImg.naturalWidth && tempImg.naturalHeight) 
+                        ? (tempImg.naturalWidth / tempImg.naturalHeight) 
+                        : 1.77;
+          reportData.chapters[cIdx].blocks[bIdx].src = dataUrl;
+          reportData.chapters[cIdx].blocks[bIdx].aspectRatio = ratio;
+          renderReport();
+        };
+        tempImg.src = dataUrl;
+      };
+      reader.readAsDataURL(file);
     }
+  }
 
-    const contentArea = document.createElement('div');
-    contentArea.className = 'page-content';
-    page.appendChild(contentArea);
+  // Text height measurement
+  function measureHtmlHeight(htmlString) {
+    const sandbox = document.getElementById('sandboxContainer');
+    sandbox.innerHTML = htmlString;
+    return sandbox.offsetHeight;
+  }
 
-    return { page, contentArea };
+  // Synchronous calculation of figure block height in pixels
+  function calculateFigureBlockHeight(aspectRatio, maxHeightPx) {
+    const maxAvailableWidth = 595; // 157.5mm printable width in standard 96dpi pixels
+    const maxAllowedHeight = maxHeightPx || 378; // 100mm max height in pixels
+    const calculatedH = (maxAvailableWidth * 0.92) / (aspectRatio || 1.77);
+    const renderedImageH = Math.min(maxAllowedHeight, calculatedH);
+    const captionAndMargins = 54; // margins + 10pt caption line height
+    return Math.round(renderedImageH + captionAndMargins);
   }
 
   function renderReport() {
-    const preview = document.getElementById('previewStage');
-    preview.innerHTML = '';
+    const stage = document.getElementById('previewStage');
+    stage.innerHTML = '';
 
-    const meta = {
-      title: document.getElementById('metaTitle').value,
-      student: document.getElementById('metaStudent').value,
-      reg: document.getElementById('metaReg').value,
-      sem: document.getElementById('metaSem').value,
-      year: document.getElementById('metaYear').value,
-      header: document.getElementById('metaHeader').value
-    };
+    const title = document.getElementById('metaTitle').value;
+    const student = document.getElementById('metaStudent').value;
+    const reg = document.getElementById('metaReg').value;
+    const sem = document.getElementById('metaSem').value;
+    const year = document.getElementById('metaYear').value;
+    const headerText = document.getElementById('metaHeader').value;
 
-    // 1. Cover Page
-    const cover = document.createElement('div');
-    cover.className = 'a4-page prelim-page';
-    cover.innerHTML = `
-      <div class="page-content" style="text-align: center; justify-content: space-between;">
-        <div>
-          <div style="font-size: 14pt; font-weight: bold; letter-spacing: 1px;">A SEMINAR REPORT ON</div>
-          <div style="font-size: 18pt; font-weight: bold; margin-top: 15px; color: #0f172a; text-transform: uppercase;">${meta.title}</div>
+    function createHeaderFooter(pageLabel) {
+      return `
+        <div class="page-header">
+          <span>${headerText}</span>
         </div>
-        <div>
-          ${getEmblemRenderHtml()}
-          <div style="font-size: 12pt; margin-top: 15px;">Submitted by</div>
-          <div style="font-size: 14pt; font-weight: bold; text-transform: uppercase;">${meta.student}</div>
-          <div style="font-size: 12pt;">Reg. No: <b>${meta.reg}</b></div>
-        </div>
-        <div>
-          <div style="font-size: 12pt;">In partial fulfillment of the requirements for the award of Diploma in</div>
-          <div style="font-size: 13pt; font-weight: bold; margin-top: 5px;">ELECTRONICS AND COMMUNICATION ENGINEERING</div>
-          <div style="font-size: 11pt; margin-top: 15px; font-weight: bold;">DEPARTMENT OF TECHNICAL EDUCATION, KERALA</div>
-          <div style="font-size: 13pt; font-weight: bold;">GOVT. POLYTECHNIC COLLEGE, KALAMASSERY</div>
-          <div style="font-size: 11pt; margin-top: 5px;">${meta.year}</div>
-        </div>
-      </div>
-    `;
-    preview.appendChild(cover);
-
-    // 2. Acknowledgement Page
-    const ackPage = document.createElement('div');
-    ackPage.className = 'a4-page prelim-page';
-    ackPage.innerHTML = `
-      <div class="page-content">
-        <div class="chapter-title" style="margin-top: 20pt;">ACKNOWLEDGEMENT</div>
-        ${reportData.acknowledgement.split('\n\n').map(p => `<p class="body-paragraph">${p}</p>`).join('')}
-        <div style="margin-top: 40px; display: flex; justify-content: flex-end;">
-          <div style="text-align: center;">
-            <div style="font-weight: bold;">${meta.student}</div>
-            <div>Reg. No: ${meta.reg}</div>
-          </div>
-        </div>
-      </div>
-    `;
-    preview.appendChild(ackPage);
-
-    // 3. Dynamic Chapter Pages with Automatic Spanning
-    let currentPageNum = 1;
-    
-    // Total usable height in pixels for A4 body content (297mm - margins)
-    // 297mm - 30mm (top) - 25mm (bottom) = 242mm ≈ ~914px at 96 DPI
-    const MAX_PAGE_CONTENT_HEIGHT = 880; 
-
-    reportData.chapters.forEach((chap, cIdx) => {
-      let chapterNum = cIdx + 1;
-      let l1Counter = 0;
-      let l2Counter = 0;
-
-      let { page, contentArea } = buildPageTemplate(currentPageNum, meta.header, false);
-      preview.appendChild(page);
-
-      // Chapter Title Block
-      const chapterHeaderHtml = `
-        <div class="chapter-title">
-          CHAPTER ${chapterNum}<br>${chap.title}
+        <div class="page-footer">
+          <span>Dept. of ECE, GPTC Kalamassery</span>
+          <span>Page ${pageLabel}</span>
         </div>
       `;
-      contentArea.innerHTML = chapterHeaderHtml;
-      let currentHeight = measureBlockHeight(chapterHeaderHtml);
+    }
 
-      chap.blocks.forEach((block) => {
-        let blockHtml = '';
+    const emblemHtml = getEmblemRenderHtml();
 
-        if (block.type === 'paragraph') {
-          blockHtml = `<p class="body-paragraph">${block.content}</p>`;
-        } else if (block.type === 'subheading1') {
-          l1Counter++;
-          l2Counter = 0;
-          blockHtml = `<div class="subheading-l1">${chapterNum}.${l1Counter} ${block.content}</div>`;
-        } else if (block.type === 'subheading2') {
-          l2Counter++;
-          blockHtml = `<div class="subheading-l2">${chapterNum}.${l1Counter}.${l2Counter} ${block.content}</div>`;
-        } else if (block.type === 'figure') {
-          blockHtml = `
-            <div class="figure-container">
-              <img src="${block.src}" alt="${block.caption}">
-              <div class="figure-caption">Figure: ${block.caption}</div>
-            </div>
-          `;
+    // DYNAMIC TITLE FONT SIZING
+    let titleLength = title.trim().length;
+    let coverTitleSize = "24pt";
+    let coverTitleLH = "1.25";
+
+    if (titleLength > 80) {
+      coverTitleSize = "16pt";
+      coverTitleLH = "1.15";
+    } else if (titleLength > 45) {
+      coverTitleSize = "19pt";
+      coverTitleLH = "1.2";
+    }
+
+    // 1. COVER PAGE
+    const coverPage = document.createElement('div');
+    coverPage.className = 'a4-page prelim-page';
+    coverPage.innerHTML = `
+      <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+        <div>
+          ${emblemHtml}
+          <div style="font-size: 20pt; font-weight: bold; line-height: 1.25; letter-spacing: 0.5px;">
+            GOVERNMENT POLYTECHNIC COLLEGE<br>KALAMASSERY
+          </div>
+        </div>
+
+        <div style="margin: 2mm 0; max-height: 42mm; display: flex; flex-direction: column; justify-content: center;">
+          <div style="font-size: 18pt; font-weight: bold; letter-spacing: 1px;">SEMINAR REPORT</div>
+          <div style="font-size: 14pt; font-weight: bold; margin: 6px 0;">ON</div>
+          <div style="font-size: ${coverTitleSize}; font-weight: bold; text-transform: uppercase; line-height: ${coverTitleLH}; padding: 0 4mm;">
+            ${title}
+          </div>
+        </div>
+
+        <div>
+          <p style="font-size: 12pt; font-style: italic; margin: 0; line-height: 1.45;">
+            Submitted in partial fulfilment of the requirements for the award of<br>
+            Diploma in Electronics and Communication Engineering<br>
+            (State Board of Technical Education, Kerala)
+          </p>
+        </div>
+
+        <div>
+          <div style="font-size: 14pt; font-weight: bold; margin-bottom: 3px;">Submitted by</div>
+          <div style="font-size: 18pt; font-weight: bold; letter-spacing: 0.5px;">${student.toUpperCase()}</div>
+          <div style="font-size: 18pt; margin-top: 3px;">Reg. No. ${reg}</div>
+        </div>
+
+        <div style="margin-bottom: 2mm;">
+          <div style="font-size: 15pt; font-weight: bold; line-height: 1.35; letter-spacing: 0.5px; white-space: nowrap;">
+            DEPARTMENT OF ELECTRONICS AND COMMUNICATION
+          </div>
+          <div style="font-size: 15pt; font-weight: bold; line-height: 1.35; letter-spacing: 0.5px;">
+            ENGINEERING
+          </div>
+          <div style="font-size: 14pt; font-weight: bold; margin-top: 5px;">${year}</div>
+        </div>
+      </div>
+    `;
+    stage.appendChild(coverPage);
+
+    // 2. CERTIFICATE PAGE
+    const certPage = document.createElement('div');
+    certPage.className = 'a4-page prelim-page';
+    certPage.innerHTML = `
+      <div style="height: 100%; display: flex; flex-direction: column; justify-content: space-between; text-align: center;">
+        <div>
+          ${emblemHtml}
+          <div style="font-size: 20pt; font-weight: bold; line-height: 1.25; letter-spacing: 0.5px;">
+            GOVERNMENT POLYTECHNIC COLLEGE<br>KALAMASSERY
+          </div>
+          <div style="font-size: 12pt; font-weight: bold; margin-top: 8px; letter-spacing: 0.5px;">
+            DEPARTMENT OF ELECTRONICS & COMMUNICATION ENGINEERING
+          </div>
+        </div>
+
+        <div style="font-size: 16pt; font-weight: bold; letter-spacing: 1.5px; margin: 3mm 0 1mm 0;">
+          CERTIFICATE
+        </div>
+
+        <div style="font-size: 12pt; line-height: 1.7; text-align: justify; padding: 0 1mm;">
+          This is to certify that the seminar report entitled <strong>“${title.toUpperCase()}”</strong> submitted by <strong>${student}</strong> (Reg. No. ${reg}), a student of the ${sem} Semester Diploma in Electronics and Communication Engineering, is a bonafide record of the seminar work carried out during the academic year ${year} in the Department of Electronics and Communication Engineering, Government Polytechnic College, Kalamassery. This report is submitted in partial fulfilment of the requirements for the award of the Diploma in Electronics and Communication Engineering of the State Board of Technical Education, Kerala.
+        </div>
+
+        <div style="margin-top: 6mm; margin-bottom: 3mm; display: grid; grid-template-columns: 1fr 1fr; row-gap: 18mm; font-size: 11pt; font-weight: normal;">
+          <div style="text-align: left; padding-left: 5mm;">Project Guide</div>
+          <div style="text-align: right; padding-right: 5mm;">Head of Department</div>
+          <div style="text-align: left; padding-left: 5mm;">Internal Examiner</div>
+          <div style="text-align: right; padding-right: 5mm;">External Examiner</div>
+        </div>
+      </div>
+    `;
+    stage.appendChild(certPage);
+
+    // 3. ACKNOWLEDGEMENT PAGE (Page i)
+    const ackPage = document.createElement('div');
+    ackPage.className = 'a4-page';
+    let ackParagraphs = reportData.acknowledgement.split('\n\n').map(p => `<p class="body-paragraph" style="margin-bottom: 12pt;">${p.trim()}</p>`).join('');
+    ackPage.innerHTML = `
+      ${createHeaderFooter('i')}
+      <div class="page-content">
+        <div class="chapter-title">ACKNOWLEDGEMENT</div>
+        <div style="margin-top: 15pt;">
+          ${ackParagraphs}
+        </div>
+        <div style="margin-top: auto; margin-bottom: 15mm; text-align: right; font-size: 12pt;">
+          <strong>${student.toUpperCase()}</strong>
+        </div>
+      </div>
+    `;
+    stage.appendChild(ackPage);
+
+    // 4. ABSTRACT PAGE (Page ii)
+    const absPage = document.createElement('div');
+    absPage.className = 'a4-page';
+    absPage.innerHTML = `
+      ${createHeaderFooter('ii')}
+      <div class="page-content">
+        <div class="chapter-title">ABSTRACT</div>
+        <p class="body-paragraph">${reportData.abstract}</p>
+      </div>
+    `;
+    stage.appendChild(absPage);
+
+    // TABLE OF CONTENTS PLACEHOLDER (Page iii)
+    const tocPage = document.createElement('div');
+    tocPage.className = 'a4-page';
+    stage.appendChild(tocPage);
+
+    // DYNAMIC CHAPTER PAGINATION ENGINE WITH UNCLIPPED FIGURE AUTO-FLOW
+    // Max safe printable height within margins: 297mm - 30mm - 25mm = 242mm (~880px)
+    const MAX_PAGE_CONTENT_HEIGHT = 880; 
+
+    let currentArabicPage = 1;
+    let tocItems = [];
+    let chapterPagesMap = [];
+
+    let currentPageElements = [];
+    let accumulatedHeight = 0;
+
+    function pushCurrentPage() {
+      if (currentPageElements.length > 0) {
+        chapterPagesMap.push({
+          pageNum: currentArabicPage,
+          elements: currentPageElements
+        });
+        currentArabicPage++;
+        currentPageElements = [];
+        accumulatedHeight = 0;
+      }
+    }
+
+    // Word-by-word flow for paragraphs
+    function flowParagraphAcrossPages(text) {
+      let isFirstChunk = true;
+      let remainingText = text.trim();
+
+      while (remainingText.length > 0) {
+        let fullHtml = `<p class="body-paragraph" style="${!isFirstChunk ? 'text-indent: 0;' : ''}">${remainingText}</p>`;
+        let fullH = measureHtmlHeight(fullHtml);
+        let spaceLeft = MAX_PAGE_CONTENT_HEIGHT - accumulatedHeight;
+
+        if (fullH <= spaceLeft) {
+          currentPageElements.push({ html: fullHtml });
+          accumulatedHeight += fullH;
+          break;
         }
 
-        const blockHeight = measureBlockHeight(blockHtml);
-
-        // If the block overflows the current page, split onto the next page
-        if (currentHeight + blockHeight > MAX_PAGE_CONTENT_HEIGHT) {
-          currentPageNum++;
-          const next = buildPageTemplate(currentPageNum, meta.header, false);
-          preview.appendChild(next.page);
-
-          page = next.page;
-          contentArea = next.contentArea;
-          currentHeight = 0;
+        if (spaceLeft < 55) {
+          pushCurrentPage();
+          continue;
         }
 
-        contentArea.insertAdjacentHTML('beforeend', blockHtml);
-        currentHeight += blockHeight;
+        let words = remainingText.split(/(\s+)/);
+        let low = 1;
+        let high = words.length;
+        let bestFit = 0;
+
+        while (low <= high) {
+          let mid = Math.floor((low + high) / 2);
+          let testText = words.slice(0, mid).join('');
+          let testHtml = `<p class="body-paragraph" style="${!isFirstChunk ? 'text-indent: 0;' : ''}">${testText}</p>`;
+          let testH = measureHtmlHeight(testHtml);
+
+          if (testH <= spaceLeft) {
+            bestFit = mid;
+            low = mid + 1;
+          } else {
+            high = mid - 1;
+          }
+        }
+
+        let chunkWords = words.slice(0, bestFit).join('').trim();
+        let leftoverWords = words.slice(bestFit).join('').trim();
+
+        if (chunkWords.length === 0 || bestFit < 5) {
+          pushCurrentPage();
+          continue;
+        }
+
+        if (leftoverWords.split(/\s+/).length < 4 && leftoverWords.length > 0) {
+          bestFit = Math.max(5, bestFit - 6);
+          chunkWords = words.slice(0, bestFit).join('').trim();
+          leftoverWords = words.slice(bestFit).join('').trim();
+        }
+
+        let chunkHtml = `<p class="body-paragraph" style="margin-bottom: 0; ${!isFirstChunk ? 'text-indent: 0;' : ''}">${chunkWords}</p>`;
+        currentPageElements.push({ html: chunkHtml });
+
+        pushCurrentPage();
+        isFirstChunk = false;
+        remainingText = leftoverWords;
+      }
+    }
+
+    reportData.chapters.forEach((chap, cIdx) => {
+      const chapNum = cIdx + 1;
+      let s1Count = 0;
+      let s2Count = 0;
+      let figCount = 0;
+
+      // RULE: Every chapter starts on a new page
+      pushCurrentPage();
+
+      let chapterStartPage = currentArabicPage;
+      tocItems.push({
+        num: `${chapNum}`,
+        title: toTitleCase(chap.title),
+        page: chapterStartPage,
+        level: 0
       });
 
-      // Prepare next page index
-      currentPageNum++;
+      const chapterHeadingHtml = `<div class="chapter-title">CHAPTER ${chapNum}<br>${chap.title.toUpperCase()}</div>`;
+      currentPageElements.push({ html: chapterHeadingHtml });
+      accumulatedHeight += measureHtmlHeight(chapterHeadingHtml);
+
+      chap.blocks.forEach(b => {
+        if (b.type === 'paragraph') {
+          flowParagraphAcrossPages(b.content);
+        } else if (b.type === 'subheading1') {
+          s1Count++;
+          s2Count = 0;
+          const label = `${chapNum}.${s1Count}`;
+          const titleText = toTitleCase(b.content);
+          const subHtml = `<div class="subheading-l1">${label} ${b.content.toUpperCase()}</div>`;
+          const subH = measureHtmlHeight(subHtml);
+
+          // Prevent orphan subheading: requires room for subheading + 2 lines of text (70px)
+          if (accumulatedHeight + subH + 70 > MAX_PAGE_CONTENT_HEIGHT) {
+            pushCurrentPage();
+          }
+
+          tocItems.push({
+            num: label,
+            title: titleText,
+            page: currentArabicPage,
+            level: 1
+          });
+
+          currentPageElements.push({ html: subHtml });
+          accumulatedHeight += subH;
+        } else if (b.type === 'subheading2') {
+          s2Count++;
+          const label = s1Count === 0 ? `${chapNum}.1.${s2Count}` : `${chapNum}.${s1Count}.${s2Count}`;
+          const titleText = toTitleCase(b.content);
+          const subHtml = `<div class="subheading-l2">${label} ${titleText}</div>`;
+          const subH = measureHtmlHeight(subHtml);
+
+          if (accumulatedHeight + subH + 70 > MAX_PAGE_CONTENT_HEIGHT) {
+            pushCurrentPage();
+          }
+
+          tocItems.push({
+            num: label,
+            title: titleText,
+            page: currentArabicPage,
+            level: 2
+          });
+
+          currentPageElements.push({ html: subHtml });
+          accumulatedHeight += subH;
+        } else if (b.type === 'figure') {
+          figCount++;
+          const imgSrc = b.src || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="260"><rect width="600" height="260" fill="%23f1f5f9"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23334155">Image Placeholder</text></svg>';
+          const ratio = b.aspectRatio || 1.77;
+
+          // 1. Calculate space left on current sheet
+          let spaceRemaining = MAX_PAGE_CONTENT_HEIGHT - accumulatedHeight;
+
+          // 2. Compute full height of this figure block
+          let neededFigHeight = calculateFigureBlockHeight(ratio, 378);
+
+          // 3. Prevent clipping: if it doesn't fit with comfortable clearance, push to fresh page
+          if (spaceRemaining < neededFigHeight) {
+            pushCurrentPage();
+            spaceRemaining = MAX_PAGE_CONTENT_HEIGHT;
+          }
+
+          // 4. Set maximum height dynamically so it can never exceed page bounds
+          let safeMaxHeightMm = Math.min(100, Math.floor((spaceRemaining - 60) * 0.264583));
+          if (safeMaxHeightMm < 45) safeMaxHeightMm = 45;
+
+          const figHtml = `
+            <div class="figure-container">
+              <img src="${imgSrc}" style="max-height: ${safeMaxHeightMm}mm;" alt="Figure">
+              <div class="figure-caption">Figure ${chapNum}.${figCount}: ${b.caption}</div>
+            </div>
+          `;
+
+          currentPageElements.push({ html: figHtml });
+          accumulatedHeight += calculateFigureBlockHeight(ratio, Math.round(safeMaxHeightMm / 0.264583));
+        }
+      });
     });
+
+    pushCurrentPage();
+
+    // Render All Generated Chapter Pages into DOM
+    chapterPagesMap.forEach(pg => {
+      const pageDiv = document.createElement('div');
+      pageDiv.className = 'a4-page';
+      let contentHtml = pg.elements.map(el => el.html).join('');
+      pageDiv.innerHTML = `
+        ${createHeaderFooter(pg.pageNum)}
+        <div class="page-content">
+          ${contentHtml}
+        </div>
+      `;
+      stage.appendChild(pageDiv);
+    });
+
+    // REFERENCES PAGE (Starts on a fresh page)
+    const refStartPage = currentArabicPage;
+    tocItems.push({
+      num: `${reportData.chapters.length + 1}`,
+      title: "References",
+      page: refStartPage,
+      level: 0
+    });
+
+    const refPage = document.createElement('div');
+    refPage.className = 'a4-page';
+    let refListHtml = reportData.references.map(r => `<div style="margin-bottom: 8pt; font-size: 12pt; text-align: justify;">${r}</div>`).join('');
+    refPage.innerHTML = `
+      ${createHeaderFooter(refStartPage)}
+      <div class="page-content">
+        <div class="chapter-title">REFERENCES</div>
+        <div style="line-height: 1.5; margin-top: 15pt;">
+          ${refListHtml}
+        </div>
+      </div>
+    `;
+    stage.appendChild(refPage);
+
+    // POPULATE TABLE OF CONTENTS (Page iii)
+    let tocRowsHtml = `
+      <div class="toc-row" style="padding-left: 0px; font-size: 12pt; font-weight: bold;">
+        <span class="toc-title">Acknowledgement</span>
+        <span class="toc-leader"></span>
+        <span class="toc-page">i</span>
+      </div>
+      <div class="toc-row" style="padding-left: 0px; font-size: 12pt; font-weight: bold;">
+        <span class="toc-title">Abstract</span>
+        <span class="toc-leader"></span>
+        <span class="toc-page">ii</span>
+      </div>
+    `;
+
+    tocRowsHtml += tocItems.map(item => {
+      let indent = item.level === 1 ? '22px' : (item.level === 2 ? '42px' : '0px');
+      let weight = item.level === 0 ? 'bold' : 'normal';
+      let fontSz = item.level === 0 ? '12pt' : '11.5pt';
+      return `
+        <div class="toc-row" style="padding-left: ${indent}; font-size: ${fontSz}; font-weight: ${weight};">
+          <span class="toc-title">${item.num}&nbsp;&nbsp;${item.title}</span>
+          <span class="toc-leader"></span>
+          <span class="toc-page">${item.page}</span>
+        </div>
+      `;
+    }).join('');
+
+    tocPage.innerHTML = `
+      ${createHeaderFooter('iii')}
+      <div class="page-content">
+        <div class="chapter-title">TABLE OF CONTENTS</div>
+        <div style="margin-top: 20px;">
+          ${tocRowsHtml}
+        </div>
+      </div>
+    `;
   }
 
-  // Initialize
-  window.onload = function() {
-    renderControls();
-    renderReport();
-  };
+  // Initial Run
+  renderControls();
+  renderReport();
 </script>
 </body>
 </html>
