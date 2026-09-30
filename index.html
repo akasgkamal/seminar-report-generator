@@ -72,6 +72,18 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
     .sidebar h2 { margin: 0; font-size: 17px; color: #0f172a; }
+    
+    .save-indicator {
+      font-size: 11px;
+      font-weight: 600;
+      color: #16a34a;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: -6px;
+      margin-bottom: 4px;
+    }
+
     .card {
       background: #f8fafc;
       border: 1px solid #e2e8f0;
@@ -151,6 +163,24 @@
     }
     .btn-print:hover { background: #0369a1; }
 
+    .backup-bar {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .btn-backup {
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid #cbd5e1;
+      background: #f1f5f9;
+      color: #1e293b;
+      text-align: center;
+    }
+    .btn-backup:hover { background: #e2e8f0; }
+
     /* Right Preview Stage */
     .preview-stage {
       flex: 1;
@@ -173,7 +203,7 @@
       max-height: 297mm;
       background: #ffffff;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-      /* Kalamassery Report Margins: Top 30mm, Right 20mm, Bottom 25mm, Left 32.5mm */
+      /* Kalamassery Report Margins: Top 30mm, Right 20mm, Bottom 25mm, Left 32.5mm[cite: 1] */
       padding: 30mm 20mm 25mm 32.5mm;
       box-sizing: border-box;
       font-family: var(--serif);
@@ -193,7 +223,7 @@
       padding: 20mm 25mm 18mm 25mm !important;
     }
 
-    /* 50% Enlarged Emblem */
+    /* 50% Enlarged Emblem[cite: 5, 6] */
     .official-logo {
       width: 142px;
       height: 142px;
@@ -215,7 +245,7 @@
       font-style: italic;
     }
 
-    /* Running Header & Footer */
+    /* Running Header & Footer[cite: 1] */
     .page-header {
       position: absolute;
       top: 15mm;
@@ -250,7 +280,7 @@
       overflow: hidden;
     }
 
-    /* Typography Specifications */
+    /* Typography Specifications[cite: 1] */
     .chapter-title {
       font-size: 16pt;
       font-weight: bold;
@@ -286,7 +316,6 @@
       margin-bottom: 10pt;
     }
 
-    /* Unclipped Adaptive Figure Container */
     .figure-container {
       text-align: center;
       margin: 10pt 0 12pt 0;
@@ -336,7 +365,7 @@
       z-index: 1;
     }
 
-    /* Invisible sandbox */
+    /* Invisible measurement sandbox */
     #sandboxContainer {
       position: absolute;
       top: -9999px;
@@ -446,41 +475,56 @@
   <!-- Controls Sidebar -->
   <div class="sidebar" id="sidebarPanel">
     <h2>Seminar Report Generator</h2>
+    <div class="save-indicator" id="saveIndicator">● Automatically saved to this device</div>
+    
     <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
 
-    <!-- Upload Provision for College Emblem -->
+    <!-- Project Backup / Restore Tools -->
+    <div class="card" style="background: #f8fafc;">
+      <div class="card-title">Save & Restore Project</div>
+      <div class="backup-bar">
+        <button class="btn-backup" onclick="exportProjectJson()">💾 Save Backup</button>
+        <button class="btn-backup" onclick="document.getElementById('inProjectFile').click()">📂 Load Backup</button>
+      </div>
+      <input type="file" id="inProjectFile" accept=".json" style="display:none;" onchange="importProjectJson(event)">
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn-sm btn-del" style="border:none; padding:4px;" onclick="resetProjectConfirmation()">Reset to Default Template</button>
+      </div>
+    </div>
+
+    <!-- Upload Provision for College Emblem[cite: 5, 6] -->
     <div class="card" style="border: 2px solid #38bdf8; background: #f0f9ff;">
       <div class="card-title" style="color: #0369a1;">College Emblem Upload</div>
       <label>Choose Logo / Seal File</label>
       <input type="file" id="inEmblemFile" accept="image/*" onchange="uploadEmblem(event)">
-      <span style="font-size: 11px; color: #64748b;">Upload PNG/JPG of college seal to display on Cover and Certificate pages.</span>
+      <span style="font-size: 11px; color: #64748b;">Upload PNG/JPG of college seal to display on Cover and Certificate pages[cite: 5, 6].</span>
     </div>
 
     <div class="card">
       <div class="card-title">General Information</div>
       <label>Seminar Title</label>
-      <input type="text" id="metaTitle" value="SMART MEDICINE DISPENSER" oninput="renderReport()">
+      <input type="text" id="metaTitle" value="SMART MEDICINE DISPENSER" oninput="saveAndRender()">
       
       <label>Student Full Name</label>
-      <input type="text" id="metaStudent" value="VYSAKH ET" oninput="renderReport()">
+      <input type="text" id="metaStudent" value="VYSAKH ET" oninput="saveAndRender()">
       
       <label>Register Number</label>
-      <input type="text" id="metaReg" value="2301041382" oninput="renderReport()">
+      <input type="text" id="metaReg" value="2301041382" oninput="saveAndRender()">
 
       <label>Semester</label>
-      <input type="text" id="metaSem" value="Fifth" oninput="renderReport()">
+      <input type="text" id="metaSem" value="Fifth" oninput="saveAndRender()">
 
       <label>Academic Year</label>
-      <input type="text" id="metaYear" value="2026 – 2027" oninput="renderReport()">
+      <input type="text" id="metaYear" value="2026 – 2027" oninput="saveAndRender()">
 
       <label>Running Header Text</label>
-      <input type="text" id="metaHeader" value="Main Project Report Format" oninput="renderReport()">
+      <input type="text" id="metaHeader" value="Main Project Report Format" oninput="saveAndRender()">
     </div>
 
     <!-- Acknowledgement Card -->
     <div class="card">
       <div class="card-title">Pre-Included: Acknowledgement</div>
-      <textarea id="inAck" rows="8" oninput="reportData.acknowledgement = this.value; renderReport();"></textarea>
+      <textarea id="inAck" rows="8" oninput="reportData.acknowledgement = this.value; saveAndRender();"></textarea>
     </div>
 
     <!-- Chapters Container -->
@@ -491,9 +535,17 @@
   <div class="preview-stage" id="previewStage"></div>
 
 <script>
+  const STORAGE_KEY = "GPTC_SEMINAR_REPORT_DATA_V1";
   let uploadedEmblemUrl = "";
 
-  let reportData = {
+  const defaultReportData = {
+    metaTitle: "SMART MEDICINE DISPENSER",
+    metaStudent: "VYSAKH ET",
+    metaReg: "2301041382",
+    metaSem: "Fifth",
+    metaYear: "2026 – 2027",
+    metaHeader: "Main Project Report Format",
+    emblemUrl: "",
     acknowledgement: `I express my heartfelt gratitude to the Almighty for all blessings in bringing this seminar to a successful completion.
 
 I am deeply thankful to our respected Principal, Sri. Vinod E, for granting permission to conduct this seminar and for providing the necessary institutional facilities.
@@ -566,6 +618,118 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
     ]
   };
 
+  let reportData = JSON.parse(JSON.stringify(defaultReportData));
+
+  // --- AUTOMATIC PERSISTENCE ENGINE ---
+  function loadPersistedData() {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        reportData = parsed;
+        if (parsed.emblemUrl) uploadedEmblemUrl = parsed.emblemUrl;
+        
+        // Restore input fields
+        document.getElementById('metaTitle').value = reportData.metaTitle || defaultReportData.metaTitle;
+        document.getElementById('metaStudent').value = reportData.metaStudent || defaultReportData.metaStudent;
+        document.getElementById('metaReg').value = reportData.metaReg || defaultReportData.metaReg;
+        document.getElementById('metaSem').value = reportData.metaSem || defaultReportData.metaSem;
+        document.getElementById('metaYear').value = reportData.metaYear || defaultReportData.metaYear;
+        document.getElementById('metaHeader').value = reportData.metaHeader || defaultReportData.metaHeader;
+      }
+    } catch (e) {
+      console.warn("Storage restore bypassed:", e);
+    }
+  }
+
+  function saveToStorage() {
+    try {
+      reportData.metaTitle = document.getElementById('metaTitle').value;
+      reportData.metaStudent = document.getElementById('metaStudent').value;
+      reportData.metaReg = document.getElementById('metaReg').value;
+      reportData.metaSem = document.getElementById('metaSem').value;
+      reportData.metaYear = document.getElementById('metaYear').value;
+      reportData.metaHeader = document.getElementById('metaHeader').value;
+      reportData.emblemUrl = uploadedEmblemUrl;
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(reportData));
+      
+      const indicator = document.getElementById('saveIndicator');
+      if (indicator) {
+        indicator.innerHTML = "● Saved to this device at " + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+        indicator.style.color = "#16a34a";
+      }
+    } catch (e) {
+      console.warn("Could not save to localStorage (quota or private mode):", e);
+    }
+  }
+
+  function saveAndRender() {
+    saveToStorage();
+    renderReport();
+  }
+
+  // Backup file export (.json)
+  function exportProjectJson() {
+    saveToStorage();
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(reportData, null, 2));
+    const dlAnchor = document.createElement('a');
+    const safeStudent = (reportData.metaStudent || "Student").replace(/[^a-zA-Z0-9]/g, "_");
+    dlAnchor.setAttribute("href", dataStr);
+    dlAnchor.setAttribute("download", `Seminar_Report_Backup_${safeStudent}.json`);
+    document.body.appendChild(dlAnchor);
+    dlAnchor.click();
+    dlAnchor.remove();
+  }
+
+  // Backup file import (.json)
+  function importProjectJson(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const imported = JSON.parse(evt.target.result);
+        reportData = imported;
+        if (imported.emblemUrl) uploadedEmblemUrl = imported.emblemUrl;
+        
+        document.getElementById('metaTitle').value = reportData.metaTitle || defaultReportData.metaTitle;
+        document.getElementById('metaStudent').value = reportData.metaStudent || defaultReportData.metaStudent;
+        document.getElementById('metaReg').value = reportData.metaReg || defaultReportData.metaReg;
+        document.getElementById('metaSem').value = reportData.metaSem || defaultReportData.metaSem;
+        document.getElementById('metaYear').value = reportData.metaYear || defaultReportData.metaYear;
+        document.getElementById('metaHeader').value = reportData.metaHeader || defaultReportData.metaHeader;
+
+        saveToStorage();
+        renderControls();
+        renderReport();
+        alert("Project backup successfully restored!");
+      } catch (err) {
+        alert("Invalid project backup file.");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function resetProjectConfirmation() {
+    if (confirm("Reset everything to the default template? Your current edits will be cleared.")) {
+      localStorage.removeItem(STORAGE_KEY);
+      reportData = JSON.parse(JSON.stringify(defaultReportData));
+      uploadedEmblemUrl = "";
+      
+      document.getElementById('metaTitle').value = defaultReportData.metaTitle;
+      document.getElementById('metaStudent').value = defaultReportData.metaStudent;
+      document.getElementById('metaReg').value = defaultReportData.metaReg;
+      document.getElementById('metaSem').value = defaultReportData.metaSem;
+      document.getElementById('metaYear').value = defaultReportData.metaYear;
+      document.getElementById('metaHeader').value = defaultReportData.metaHeader;
+
+      saveToStorage();
+      renderControls();
+      renderReport();
+    }
+  }
+
   function toTitleCase(str) {
     return str.replace(/\w\S*/g, function(txt){
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -597,7 +761,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
       const reader = new FileReader();
       reader.onload = function(evt) {
         uploadedEmblemUrl = evt.target.result;
-        renderReport();
+        saveAndRender();
       };
       reader.readAsDataURL(file);
     }
@@ -621,7 +785,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
     absCard.className = 'card';
     absCard.innerHTML = `
       <div class="card-title">Pre-Included: Abstract</div>
-      <textarea rows="4" oninput="reportData.abstract = this.value; renderReport();">${reportData.abstract}</textarea>
+      <textarea rows="4" oninput="reportData.abstract = this.value; saveAndRender();">${reportData.abstract}</textarea>
     `;
     container.appendChild(absCard);
 
@@ -638,27 +802,27 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
                 <span>Paragraph</span>
                 <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Remove</button>
               </div>
-              <textarea rows="3" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].content = this.value; renderReport();">${b.content}</textarea>
+              <textarea rows="3" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].content = this.value; saveAndRender();">${b.content}</textarea>
             </div>
           `;
         } else if (b.type === 'subheading1') {
           return `
             <div class="block-item">
               <div class="block-item-header">
-                <span>First Subheading (1.1, 2.1...)</span>
+                <span>First Subheading (1.1, 2.1...)[cite: 1]</span>
                 <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Remove</button>
               </div>
-              <input type="text" value="${b.content}" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].content = this.value; renderReport();">
+              <input type="text" value="${b.content}" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].content = this.value; saveAndRender();">
             </div>
           `;
         } else if (b.type === 'subheading2') {
           return `
             <div class="block-item">
               <div class="block-item-header">
-                <span>Second Subheading (1.1.1, 2.1.1...)</span>
+                <span>Second Subheading (1.1.1, 2.1.1...)[cite: 1]</span>
                 <button class="btn-sm btn-del" onclick="removeBlock(${cIdx}, ${bIdx})">Remove</button>
               </div>
-              <input type="text" value="${b.content}" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].content = this.value; renderReport();">
+              <input type="text" value="${b.content}" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].content = this.value; saveAndRender();">
             </div>
           `;
         } else if (b.type === 'figure') {
@@ -670,7 +834,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
               </div>
               <input type="file" accept="image/*" onchange="uploadBlockImage(event, ${cIdx}, ${bIdx})">
               <label style="margin-top:4px; display:block;">Caption:</label>
-              <input type="text" value="${b.caption}" placeholder="Name of the figure" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].caption = this.value; renderReport();">
+              <input type="text" value="${b.caption}" placeholder="Name of the figure" oninput="reportData.chapters[${cIdx}].blocks[${bIdx}].caption = this.value; saveAndRender();">
             </div>
           `;
         }
@@ -686,7 +850,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
           </div>
         </div>
         <label>Chapter Heading</label>
-        <input type="text" value="${chap.title}" oninput="reportData.chapters[${cIdx}].title = this.value; renderReport();">
+        <input type="text" value="${chap.title}" oninput="reportData.chapters[${cIdx}].title = this.value; saveAndRender();">
         
         <div style="font-size:11px; font-weight:bold; margin-top:8px;">Add Modular Content:</div>
         <div class="block-toolbar">
@@ -705,7 +869,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
     refCard.className = 'card';
     refCard.innerHTML = `
       <div class="card-title">Pre-Included: References</div>
-      <textarea rows="4" placeholder="One reference per line" oninput="reportData.references = this.value.split('\\n'); renderReport();">${reportData.references.join('\n')}</textarea>
+      <textarea rows="4" placeholder="One reference per line" oninput="reportData.references = this.value.split('\\n'); saveAndRender();">${reportData.references.join('\n')}</textarea>
     `;
     container.appendChild(refCard);
   }
@@ -716,13 +880,13 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
     if (type === 'subheading2') reportData.chapters[cIdx].blocks.push({ type, content: "Detailed Section Analysis" });
     if (type === 'figure') reportData.chapters[cIdx].blocks.push({ type, src: "", caption: "Name of the figure.", aspectRatio: 1.77 });
     renderControls();
-    renderReport();
+    saveAndRender();
   }
 
   function removeBlock(cIdx, bIdx) {
     reportData.chapters[cIdx].blocks.splice(bIdx, 1);
     renderControls();
-    renderReport();
+    saveAndRender();
   }
 
   function insertChapter(positionIndex) {
@@ -731,16 +895,15 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
       blocks: [{ type: "paragraph", content: "Write chapter contents here..." }]
     });
     renderControls();
-    renderReport();
+    saveAndRender();
   }
 
   function deleteChapter(idx) {
     reportData.chapters.splice(idx, 1);
     renderControls();
-    renderReport();
+    saveAndRender();
   }
 
-  // Pre-load natural image dimensions so height is computed synchronously
   function uploadBlockImage(e, cIdx, bIdx) {
     const file = e.target.files[0];
     if (file) {
@@ -754,7 +917,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
                         : 1.77;
           reportData.chapters[cIdx].blocks[bIdx].src = dataUrl;
           reportData.chapters[cIdx].blocks[bIdx].aspectRatio = ratio;
-          renderReport();
+          saveAndRender();
         };
         tempImg.src = dataUrl;
       };
@@ -762,20 +925,18 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
     }
   }
 
-  // Text height measurement
   function measureHtmlHeight(htmlString) {
     const sandbox = document.getElementById('sandboxContainer');
     sandbox.innerHTML = htmlString;
     return sandbox.offsetHeight;
   }
 
-  // Synchronous calculation of figure block height in pixels
   function calculateFigureBlockHeight(aspectRatio, maxHeightPx) {
-    const maxAvailableWidth = 595; // 157.5mm printable width in standard 96dpi pixels
-    const maxAllowedHeight = maxHeightPx || 378; // 100mm max height in pixels
+    const maxAvailableWidth = 595; 
+    const maxAllowedHeight = maxHeightPx || 378; 
     const calculatedH = (maxAvailableWidth * 0.92) / (aspectRatio || 1.77);
     const renderedImageH = Math.min(maxAllowedHeight, calculatedH);
-    const captionAndMargins = 54; // margins + 10pt caption line height
+    const captionAndMargins = 54; 
     return Math.round(renderedImageH + captionAndMargins);
   }
 
@@ -804,7 +965,6 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
 
     const emblemHtml = getEmblemRenderHtml();
 
-    // DYNAMIC TITLE FONT SIZING
     let titleLength = title.trim().length;
     let coverTitleSize = "24pt";
     let coverTitleLH = "1.25";
@@ -817,7 +977,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
       coverTitleLH = "1.2";
     }
 
-    // 1. COVER PAGE
+    // 1. COVER PAGE[cite: 4, 5, 7]
     const coverPage = document.createElement('div');
     coverPage.className = 'a4-page prelim-page';
     coverPage.innerHTML = `
@@ -864,7 +1024,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
     `;
     stage.appendChild(coverPage);
 
-    // 2. CERTIFICATE PAGE
+    // 2. CERTIFICATE PAGE[cite: 4, 6]
     const certPage = document.createElement('div');
     certPage.className = 'a4-page prelim-page';
     certPage.innerHTML = `
@@ -932,8 +1092,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
     tocPage.className = 'a4-page';
     stage.appendChild(tocPage);
 
-    // DYNAMIC CHAPTER PAGINATION ENGINE WITH UNCLIPPED FIGURE AUTO-FLOW
-    // Max safe printable height within margins: 297mm - 30mm - 25mm = 242mm (~880px)
+    // PAGINATION ENGINE
     const MAX_PAGE_CONTENT_HEIGHT = 880; 
 
     let currentArabicPage = 1;
@@ -955,7 +1114,6 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
       }
     }
 
-    // Word-by-word flow for paragraphs
     function flowParagraphAcrossPages(text) {
       let isFirstChunk = true;
       let remainingText = text.trim();
@@ -1024,7 +1182,6 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
       let s2Count = 0;
       let figCount = 0;
 
-      // RULE: Every chapter starts on a new page
       pushCurrentPage();
 
       let chapterStartPage = currentArabicPage;
@@ -1050,7 +1207,6 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
           const subHtml = `<div class="subheading-l1">${label} ${b.content.toUpperCase()}</div>`;
           const subH = measureHtmlHeight(subHtml);
 
-          // Prevent orphan subheading: requires room for subheading + 2 lines of text (70px)
           if (accumulatedHeight + subH + 70 > MAX_PAGE_CONTENT_HEIGHT) {
             pushCurrentPage();
           }
@@ -1089,19 +1245,14 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
           const imgSrc = b.src || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="260"><rect width="600" height="260" fill="%23f1f5f9"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23334155">Image Placeholder</text></svg>';
           const ratio = b.aspectRatio || 1.77;
 
-          // 1. Calculate space left on current sheet
           let spaceRemaining = MAX_PAGE_CONTENT_HEIGHT - accumulatedHeight;
-
-          // 2. Compute full height of this figure block
           let neededFigHeight = calculateFigureBlockHeight(ratio, 378);
 
-          // 3. Prevent clipping: if it doesn't fit with comfortable clearance, push to fresh page
           if (spaceRemaining < neededFigHeight) {
             pushCurrentPage();
             spaceRemaining = MAX_PAGE_CONTENT_HEIGHT;
           }
 
-          // 4. Set maximum height dynamically so it can never exceed page bounds
           let safeMaxHeightMm = Math.min(100, Math.floor((spaceRemaining - 60) * 0.264583));
           if (safeMaxHeightMm < 45) safeMaxHeightMm = 45;
 
@@ -1134,7 +1285,7 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
       stage.appendChild(pageDiv);
     });
 
-    // REFERENCES PAGE (Starts on a fresh page)
+    // REFERENCES PAGE
     const refStartPage = currentArabicPage;
     tocItems.push({
       num: `${reportData.chapters.length + 1}`,
@@ -1195,7 +1346,8 @@ I convey my sincere appreciation to all the faculty and staff members of the Dep
     `;
   }
 
-  // Initial Run
+  // --- INITIAL BOOTSTRAP ---
+  loadPersistedData();
   renderControls();
   renderReport();
 </script>
